@@ -52,6 +52,8 @@ python app.py
 Basta rodar o script app.py:
 
 ```bash
+├── services/
+    ├── ollama.py
 ├── app.py
 ├── requirements.txt
 └── README.md
