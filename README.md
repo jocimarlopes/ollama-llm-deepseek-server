@@ -9,7 +9,7 @@ Antes de rodar o projeto, certifique-se de ter os seguintes itens instalados:
 
 - [Python 3.8+](https://www.python.org/downloads/)
 - [Ollama](https://ollama.com/)
-- `deepseek-coder` baixado no Ollama
+- `deepseek-r1` baixado no Ollama
 
 ## 🚀 Instalação
 
