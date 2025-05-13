@@ -1,0 +1,151 @@
+<!-- Silent is Golden - Jocimar Lopes -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek R1 Chat</title>
+    <script>
+        async function sendMessage() {
+            const userMessage = document.getElementById("userInput").value;
+            const responseDiv = document.getElementById("response");
+            const loader = document.getElementById("loader"); // Loader
+
+            // Exibir o loader
+            loader.style.display = "block";
+            responseDiv.innerText = ""; // Limpa resposta anterior
+
+            const apiUrl = "http://192.168.100.56:5000/stream";
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ prompt: userMessage })
+                });
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8')
+                
+                // const data = await response.json();
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    const chunk = decoder.decode(value);
+                    responseDiv.innerHTML += chunk
+                    if (chunk.includes('</think>')) {
+                        responseDiv.innerHTML = '<think><b>Pensamento da IA:</b><br>' + responseDiv.innerHTML
+                    }
+                }
+
+                // responseDiv.innerText = data;
+            } catch (error) {
+                responseDiv.innerText = "Erro ao conectar à API.";
+            } finally {
+                // Esconder o loader após a resposta
+                loader.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>DeepSeek R1</h1>
+        <input type="text" id="userInput" placeholder="Digite sua mensagem">
+        <button onclick="sendMessage()">Enviar</button>
+        <div id="loader" class="loader"></div> <!-- Loader -->
+        <p id="response"></p>
+    </div>
+</body>
+
+<style>
+    /* Reset básico */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Arial', sans-serif;
+    }
+
+    think {
+        display: inline-block;
+        font-style: italic;
+        color: gray;
+        background-color: #f0f0f0;
+        padding: 4px 8px;
+        border-left: 3px solid #999;
+        margin: 4px 0;
+    }
+
+    /* Centralizando o conteúdo */
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f8f9fa;
+    }
+
+    /* Container do chat */
+    .container {
+        width: 100%;
+        max-width: 400px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    /* Input */
+    input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    input:focus {
+        border-color: #007bff;
+    }
+
+    /* Botão */
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Loader */
+    .loader {
+        display: none; /* Inicialmente oculto */
+        margin: 15px auto;
+        width: 25px;
+        height: 25px;
+        border: 3px solid #ccc;
+        border-top: 3px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+</html>
