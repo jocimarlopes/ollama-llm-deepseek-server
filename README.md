@@ -1,7 +1,7 @@
 # 🧠 Flask API com DeepSeek-R1 via Ollama
 
 Esta é uma API desenvolvida com Flask em Python, conectando-se ao modelo LLM **DeepSeek-R1** utilizando a plataforma [Ollama](https://ollama.com/).  
-Ela permite realizar inferências com LLMs de forma simples, eficiente e local.
+Ela permite realizar inferências com LLMs de forma simples, eficiente e local com uma UI básica e retorno stream de resposta.
 
 ## ⚙️ Pré-requisitos
 
