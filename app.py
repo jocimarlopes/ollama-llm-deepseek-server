@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify, render_template, Response
+from flask_cors import CORS
 import requests
 import json
 from services import ollama
 
 app = Flask(__name__, static_url_path='/', static_folder='templates', template_folder='templates')
-
+CORS(app, origins=["*"])
 
 @app.route('/')
 def index():
