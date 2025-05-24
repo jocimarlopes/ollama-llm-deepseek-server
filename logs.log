@@ -1,0 +1,5 @@
+2025-05-24 15:49:09 - INFO - Serving on http://0.0.0.0:5000
+2025-05-24 15:49:18 - INFO - Serving on http://0.0.0.0:5000
+2025-05-24 15:49:35 - INFO - Generate: mistral:7b | 127.0.0.1 | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 | teste
+2025-05-24 15:51:14 - INFO - Generate: mistral:7b | 127.0.0.1 | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 | será que deu bom?
+2025-05-24 15:52:20 - INFO - Generate: mistral:7b | 127.0.0.1 | Mozilla/5.0 (iPhone; CPU iPhone OS 18_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Mobile/15E148 Safari/604.1 | teste

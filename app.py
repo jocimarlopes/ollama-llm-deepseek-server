@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template, Response
 from flask_cors import CORS
-from services import ollama
+from services import (ollama, logs)
 from waitress import serve
 
 app = Flask(__name__, static_url_path='/', static_folder='templates', template_folder='templates')
@@ -38,6 +38,7 @@ def stream():
     print('User-Agent: ', user_agent)
     print('Prompt: ', user_prompt)
     print('=' * 15)
+    logs.salvar_log(f'Generate: {model} | {ip} | {user_agent} | {user_prompt}')
 
     if model == "llava:7b" and image_path:
         print(image_path, '<- image_path')
@@ -48,6 +49,7 @@ def stream():
     return Response(ollama.generate_streaming(payload), content_type="text/plain")
 
 if __name__ == '__main__':
+    logs.configurar_logger()
     # app.run(host='0.0.0.0', port=5000, debug=True)
     serve(app, host='0.0.0.0', port=5000, threads=4)
     # Go to http://localhost:5000/ 
