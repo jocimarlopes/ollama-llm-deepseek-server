@@ -21,3 +21,4 @@ Traceback (most recent call last):
   File "C:\Users\Usuário\Documents\projects\ollama-llm-deepseek-server\venv\lib\site-packages\werkzeug\datastructures\file_storage.py", line 129, in save
     dst = open(dst, "wb")
 FileNotFoundError: [Errno 2] No such file or directory: '/tmp/telecursos2.png'
+2025-05-24 18:45:01 - INFO - Serving on http://0.0.0.0:5000

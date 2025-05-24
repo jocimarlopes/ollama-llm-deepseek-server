@@ -20,15 +20,13 @@ def stream():
     headers = request.headers
     user_agent = headers.get('User-Agent')
     ip = headers.get('X-Forwarded-For', request.remote_addr)
-    user_prompt = request.form.get("prompt", "")
-    model = request.form.get("model", "")
-
+    user_prompt = request.json.get("prompt", "")
+    model = request.json.get("model", "")
     image_file = request.files.get("image", None)
     image_path = None
     if image_file:
         image_path = f"./tmp/{image_file.filename}"
         image_file.save(image_path)
-
     models = ollama.get_models_ai()
     if not model in models: return {}
 
