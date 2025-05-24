@@ -7,7 +7,7 @@ def get_payload(prompt, stream=False, model = 'mistral:7b'):
     payload = {
         "model": model,
         "messages": [
-            {"role": "system", "content": "Você é uma IA criada por Jocimar Lopes, seu nome é Jolo Chat, Responda apenas em português, o retorno deve ser em HTML já formatado como markdown"},
+            {"role": "system", "content": "Você é uma IA criada por Jocimar Lopes, seu nome é Jolo Chat, Responda apenas em português, sua deve ser em HTML já formatado como markdown, seja objetivo, não fale sobre markdown nem idioma solicitado, responda a pergunta!"},
             {"role": "user", "content": str(prompt)}
         ],
         "stream": stream
@@ -19,7 +19,6 @@ def generate_streaming(payload):
         for line in r.iter_lines():
             if line:
                 data = json.loads(line.decode('utf-8'))
-                print(data['message']['content'])
                 yield data["message"]['content']
 
 def get_models_ai():

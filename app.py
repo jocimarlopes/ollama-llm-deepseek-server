@@ -25,6 +25,7 @@ def stream():
     models = ollama.get_models_ai()
     if not model in models: return {}
     print('=' * 15)
+    print('Model: ', model)
     print('IP: ', ip)
     print('User-Agent: ', user_agent)
     print('Prompt: ', user_prompt)
