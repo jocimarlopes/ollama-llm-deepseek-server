@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify, render_template, Response
 from flask_cors import CORS
-import requests
-import json
 from services import ollama
 from waitress import serve
 
@@ -12,12 +10,6 @@ CORS(app, origins=["*"])
 def index():
     return render_template('index.html')
 
-@app.route('/chat', methods=['POST'])
-def chat():
-    payload = ollama.get_payload(str(request.json.get("prompt", "")))
-    res = ollama.generate_non_streaming(payload)
-    return jsonify(res['response'].split('</think>\n\n')[1])
-
 @app.route('/models', methods=['POST'])
 def models():
     models = ollama.get_models_ai()
@@ -25,12 +17,17 @@ def models():
 
 @app.route('/stream', methods=['POST'])
 def stream():
+    headers = request.headers
+    user_agent = headers.get('User-Agent')
+    ip = headers.get('X-Forwarded-For', request.remote_addr)
     user_prompt = request.json.get("prompt", "")
     model = request.json.get("model", "")
     models = ollama.get_models_ai()
     if not model in models: return {}
     print('=' * 15)
-    print(user_prompt)
+    print('IP: ', ip)
+    print('User-Agent: ', user_agent)
+    print('Prompt: ', user_prompt)
     print('=' * 15)
     payload = ollama.get_payload(str(user_prompt), stream=True, model=model)
     return Response(ollama.generate_streaming(payload), content_type="text/plain")
