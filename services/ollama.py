@@ -1,5 +1,6 @@
 import requests
 import json
+import base64
 
 OLLAMA_LOCAL_URL = "http://localhost:11434/api/"  # Ajuste conforme necessário
 
@@ -28,3 +29,27 @@ def get_models_ai():
     for item in res['models']:
         lista.append(item['model'])
     return lista
+
+# Função para enviar imagem ao modelo Llava via API do Ollama
+def send_image_to_llava(image_path, prompt, model='llava:7b', stream=False):
+    """
+    Envia uma imagem junto com um prompt para o modelo Llava via API local do Ollama.
+    """
+    with open(image_path, "rb") as img_file:
+        image_base64 = base64.b64encode(img_file.read()).decode("utf-8")
+
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": "Você é uma analista de imagens objetivo, está aqui para analisar a imagem e responder o que foi solicitado sem muitas palavras."},
+            {"role": "user", "content": prompt}
+        ],
+        "stream": stream,
+        "images": [image_base64]
+    }
+
+    with requests.post(OLLAMA_LOCAL_URL + 'chat', json=payload, stream=True) as r:
+        for line in r.iter_lines():
+            if line:
+                data = json.loads(line.decode('utf-8'))
+                yield data["message"]['content']
