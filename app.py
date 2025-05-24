@@ -19,7 +19,10 @@ def chat():
 @app.route('/stream', methods=['POST'])
 def stream():
     user_prompt = request.json.get("prompt", "")
-    payload = ollama.get_payload(str(user_prompt), stream=True)
+    print('=' * 15)
+    print(user_prompt)
+    print('=' * 15)
+    payload = ollama.get_payload(str(user_prompt), stream=True, model='mistral:7b')
     return Response(ollama.generate_streaming(payload), content_type="text/plain")
 
 if __name__ == '__main__':
