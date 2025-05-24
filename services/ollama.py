@@ -3,10 +3,10 @@ import json
 
 OLLAMA_LOCAL_URL = "http://localhost:11434/api/"  # Ajuste conforme necessário
 
-def get_payload(prompt, stream=False, model = 'deepseek-r1'):
+def get_payload(prompt, stream=False, model = 'mistral:7b'):
     payload = {
         "model": model,
-        "prompt": 'Responda apenas em português brasil: {}'.format(str(prompt)),
+        "prompt": 'Responda apenas em português o que os usuários irão pedir a seguir: {}'.format(str(prompt)),
         "stream": stream
     }
     return payload
