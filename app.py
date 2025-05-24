@@ -17,6 +17,11 @@ def chat():
     res = ollama.generate_non_streaming(payload)
     return jsonify(res['response'].split('</think>\n\n')[1])
 
+@app.route('/models', methods=['POST'])
+def models():
+    models = ollama.get_models_ai()
+    return jsonify(models)
+
 @app.route('/stream', methods=['POST'])
 def stream():
     user_prompt = request.json.get("prompt", "")

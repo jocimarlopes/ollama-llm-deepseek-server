@@ -1,7 +1,7 @@
 import requests
 import json
 
-OLLAMA_LOCAL_URL = "http://localhost:11434/api/generate"  # Ajuste conforme necessário
+OLLAMA_LOCAL_URL = "http://localhost:11434/api/"  # Ajuste conforme necessário
 
 def get_payload(prompt, stream=False, model = 'deepseek-r1'):
     payload = {
@@ -12,12 +12,12 @@ def get_payload(prompt, stream=False, model = 'deepseek-r1'):
     return payload
 
 def generate_non_streaming(payload):
-    response = requests.post(OLLAMA_LOCAL_URL, json=payload)
+    response = requests.post(OLLAMA_LOCAL_URL + 'generate', json=payload)
     res = response.json()
     return res['response'].split('</think>\n\n')[1]
 
 def generate_streaming(payload):
-    with requests.post(OLLAMA_LOCAL_URL, json=payload, stream=True) as r:
+    with requests.post(OLLAMA_LOCAL_URL + 'generate', json=payload, stream=True) as r:
         for line in r.iter_lines():
             if line:
                 data = json.loads(line.decode('utf-8'))
@@ -25,3 +25,11 @@ def generate_streaming(payload):
                     data['response'] = data['response'].replace('<think>', '')
                 print(data['response'])
                 yield data["response"]
+
+def get_models_ai():
+    response = requests.post(OLLAMA_LOCAL_URL + 'tags')
+    res = response.json()
+    lista = []
+    for item in res['models']:
+        lista.append(item['model'])
+    return lista
