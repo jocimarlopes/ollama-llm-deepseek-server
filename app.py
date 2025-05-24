@@ -26,7 +26,7 @@ def stream():
     image_file = request.files.get("image", None)
     image_path = None
     if image_file:
-        image_path = f"/tmp/{image_file.filename}"
+        image_path = f"./tmp/{image_file.filename}"
         image_file.save(image_path)
 
     models = ollama.get_models_ai()
@@ -41,8 +41,6 @@ def stream():
     logs.salvar_log(f'Generate: {model} | {ip} | {user_agent} | {user_prompt}')
 
     if model == "llava:7b" and image_path:
-        print(image_path, '<- image_path')
-        print("Usando o modelo llava:7b com imagem.")
         return Response(ollama.send_image_to_llava(image_path=image_path, prompt=user_prompt), content_type="text/plain")
 
     payload = ollama.get_payload(str(user_prompt), stream=True, model=model)

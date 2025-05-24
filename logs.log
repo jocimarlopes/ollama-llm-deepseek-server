@@ -3,3 +3,21 @@
 2025-05-24 15:49:35 - INFO - Generate: mistral:7b | 127.0.0.1 | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 | teste
 2025-05-24 15:51:14 - INFO - Generate: mistral:7b | 127.0.0.1 | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 | será que deu bom?
 2025-05-24 15:52:20 - INFO - Generate: mistral:7b | 127.0.0.1 | Mozilla/5.0 (iPhone; CPU iPhone OS 18_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Mobile/15E148 Safari/604.1 | teste
+2025-05-24 17:57:11 - INFO - Serving on http://0.0.0.0:5000
+2025-05-24 17:57:55 - ERROR - Exception on /stream [POST]
+Traceback (most recent call last):
+  File "C:\Users\Usuário\Documents\projects\ollama-llm-deepseek-server\venv\lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Usuário\Documents\projects\ollama-llm-deepseek-server\venv\lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Usuário\Documents\projects\ollama-llm-deepseek-server\venv\lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "C:\Users\Usuário\Documents\projects\ollama-llm-deepseek-server\venv\lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Usuário\Documents\projects\ollama-llm-deepseek-server\venv\lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "C:\Users\Usuário\Documents\projects\ollama-llm-deepseek-server\app.py", line 30, in stream
+    image_file.save(image_path)
+  File "C:\Users\Usuário\Documents\projects\ollama-llm-deepseek-server\venv\lib\site-packages\werkzeug\datastructures\file_storage.py", line 129, in save
+    dst = open(dst, "wb")
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/telecursos2.png'

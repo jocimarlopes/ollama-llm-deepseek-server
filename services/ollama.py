@@ -37,11 +37,9 @@ def send_image_to_llava(image_path, prompt, model='llava:7b', stream=False):
     """
     with open(image_path, "rb") as img_file:
         image_base64 = base64.b64encode(img_file.read()).decode("utf-8")
-
     payload = {
         "model": model,
         "messages": [
-            {"role": "system", "content": "Você é uma analista de imagens objetivo, está aqui para analisar a imagem e responder o que foi solicitado sem muitas palavras."},
             {"role": "user", "content": prompt}
         ],
         "stream": stream,
