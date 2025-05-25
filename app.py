@@ -20,13 +20,17 @@ def stream():
     headers = request.headers
     user_agent = headers.get('User-Agent')
     ip = headers.get('X-Forwarded-For', request.remote_addr)
-    user_prompt = request.json.get("prompt", "")
-    model = request.json.get("model", "")
     image_file = request.files.get("image", None)
+    print(image_file, '<- image_file')
     image_path = None
     if image_file:
         image_path = f"./tmp/{image_file.filename}"
         image_file.save(image_path)
+        user_prompt = request.form.get("prompt", "")
+        model = request.form.get("model", "")
+    else:
+        user_prompt = request.json.get("prompt", "")
+        model = request.json.get("model", "")
     models = ollama.get_models_ai()
     if not model in models: return {}
 
@@ -35,7 +39,6 @@ def stream():
     print('IP: ', ip)
     print('User-Agent: ', user_agent)
     print('Prompt: ', user_prompt)
-    print('=' * 15)
     logs.salvar_log(f'Generate: {model} | {ip} | {user_agent} | {user_prompt}')
 
     if model == "llava:7b" and image_path:
