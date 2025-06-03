@@ -1,7 +1,7 @@
 import requests
 import json
 import base64
-
+#  https://e63e-143-0-229-90.ngrok-free.app
 OLLAMA_LOCAL_URL = "http://localhost:11434/api/"  # Ajuste conforme necessário
 
 def get_payload(prompt, stream=False, model = 'mistral:7b'):
