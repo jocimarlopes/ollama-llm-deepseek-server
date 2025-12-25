@@ -1,319 +1,47 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR" data-beasties-container>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jolo Chat</title>
-    <script>
-        async function sendMessage() {
-            const userInput = document.getElementById("userInput");
-            const userMessage = userInput.value.trim();
-            if (!userMessage) return;
-            
-            const chatContainer = document.getElementById("chatContainer");
-            const loader = document.getElementById("loader");
-            
-            // Adiciona mensagem do usuário
-            addMessageToChat('user', userMessage);
-            userInput.value = '';
-            
-            // Adiciona placeholder da resposta da IA
-            const aiMessageElement = addMessageToChat('ai', '...');
-            
-            // Exibir o loader
-            loader.style.display = "block";
-            
-            const apiUrl = "https://eaa6-143-0-229-172.ngrok-free.app/stream";
+  <meta charset="utf-8">
+  <title>Jolo Chat</title>
 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ prompt: userMessage })
-                });
-                
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder('utf-8');
-                let fullResponse = '';
-                
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    const chunk = decoder.decode(value);
-                    fullResponse += chunk;
-                    
-                    // Atualiza o elemento de mensagem em tempo real
-                    if (chunk.includes('</think>')) {
-                        aiMessageElement.innerHTML = '<div class="thinking"><b>Pensando...</b><br>' + fullResponse + '</div>';
-                    } else {
-                        aiMessageElement.innerHTML = formatResponse(fullResponse);
-                    }
-                    
-                    // Rolagem automática para a última mensagem
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                }
-                
-            } catch (error) {
-                aiMessageElement.innerHTML = "❌ Erro ao conectar ao servidor. Por favor, tente novamente.";
-                console.error("Erro:", error);
-            } finally {
-                // Esconder o loader após a resposta
-                loader.style.display = "none";
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-        }
-        
-        function addMessageToChat(sender, message) {
-            const chatContainer = document.getElementById("chatContainer");
-            const messageElement = document.createElement("div");
-            messageElement.className = `message ${sender}-message`;
-            
-            if (sender === 'user') {
-                messageElement.innerHTML = `<div class="message-content">${message}</div>`;
-            } else {
-                messageElement.innerHTML = `<div class="message-content">${message}</div>`;
-            }
-            
-            chatContainer.appendChild(messageElement);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-            return messageElement.querySelector('.message-content');
-        }
-        
-        function formatResponse(text) {
-            // Processa tags especiais como <think>
-            return text.replace(/<think>(.*?)<\/think>/g, '<div class="thinking">$1</div>')
-                       .replace(/\n/g, '<br>');
-        }
-        
-        // Enviar mensagem ao pressionar Enter
-        document.getElementById("userInput").addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-    </script>
-</head>
+  <base href="/">
+
+  <meta name="color-scheme" content="light dark">
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <link rel="icon" type="image/png" href="assets/logomarca.png">
+
+  <!-- add to homescreen for ios -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Jolo Chat - Sua IA Pessoal">
+  <meta property="og:description" content="Converse com a IA Jolo direto do seu navegador. Rápido, privado e sem limites.">
+  <meta property="og:image" content="https://chat.jolosystems.com/assets/logomarca.png">
+  <meta property="og:url" content="https://chat.jolosystems.com/">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jolo Chat - Sua IA Pessoal">
+  <meta name="twitter:description" content="Converse com a IA Jolo direto do seu navegador. Rápido, privado e sem limites.">
+  <meta name="twitter:image" content="https://chat.jolosystems.com/assets/logomarca.png">
+
+  <!-- Extra (opcional) -->
+  <meta name="theme-color" content="#1e1e1e">
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<style>:root{--ion-color-primary:#0054e9;--ion-color-primary-rgb:0, 84, 233;--ion-color-primary-contrast:#fff;--ion-color-primary-contrast-rgb:255, 255, 255;--ion-color-primary-shade:#004acd;--ion-color-primary-tint:#1a65eb;--ion-color-secondary:#0163aa;--ion-color-secondary-rgb:1, 99, 170;--ion-color-secondary-contrast:#fff;--ion-color-secondary-contrast-rgb:255, 255, 255;--ion-color-secondary-shade:#015796;--ion-color-secondary-tint:#1a73b3;--ion-color-tertiary:#6030ff;--ion-color-tertiary-rgb:96, 48, 255;--ion-color-tertiary-contrast:#fff;--ion-color-tertiary-contrast-rgb:255, 255, 255;--ion-color-tertiary-shade:#542ae0;--ion-color-tertiary-tint:#7045ff;--ion-color-success:#2dd55b;--ion-color-success-rgb:45, 213, 91;--ion-color-success-contrast:#000;--ion-color-success-contrast-rgb:0, 0, 0;--ion-color-success-shade:#28bb50;--ion-color-success-tint:#42d96b;--ion-color-warning:#ffc409;--ion-color-warning-rgb:255, 196, 9;--ion-color-warning-contrast:#000;--ion-color-warning-contrast-rgb:0, 0, 0;--ion-color-warning-shade:#e0ac08;--ion-color-warning-tint:#ffca22;--ion-color-danger:#c5000f;--ion-color-danger-rgb:197, 0, 15;--ion-color-danger-contrast:#fff;--ion-color-danger-contrast-rgb:255, 255, 255;--ion-color-danger-shade:#ad000d;--ion-color-danger-tint:#cb1a27;--ion-color-light:#f4f5f8;--ion-color-light-rgb:244, 245, 248;--ion-color-light-contrast:#000;--ion-color-light-contrast-rgb:0, 0, 0;--ion-color-light-shade:#d7d8da;--ion-color-light-tint:#f5f6f9;--ion-color-medium:#636469;--ion-color-medium-rgb:99, 100, 105;--ion-color-medium-contrast:#fff;--ion-color-medium-contrast-rgb:255, 255, 255;--ion-color-medium-shade:#57585c;--ion-color-medium-tint:#737478;--ion-color-dark:#222428;--ion-color-dark-rgb:34, 36, 40;--ion-color-dark-contrast:#fff;--ion-color-dark-contrast-rgb:255, 255, 255;--ion-color-dark-shade:#1e2023;--ion-color-dark-tint:#383a3e}html{--ion-dynamic-font:-apple-system-body;--ion-font-family:var(--ion-default-font)}body{background:var(--ion-background-color);color:var(--ion-text-color)}@supports (padding-top: 20px){html{--ion-safe-area-top:var(--ion-statusbar-padding)}}@supports (padding-top: env(safe-area-inset-top)){html{--ion-safe-area-top:env(safe-area-inset-top);--ion-safe-area-bottom:env(safe-area-inset-bottom);--ion-safe-area-left:env(safe-area-inset-left);--ion-safe-area-right:env(safe-area-inset-right)}}*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}html{width:100%;height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%}html:not(.hydrated) body{display:none}body{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;margin:0;padding:0;position:fixed;width:100%;max-width:100%;height:100%;max-height:100%;transform:translateZ(0);text-rendering:optimizeLegibility;overflow:hidden;touch-action:manipulation;-webkit-user-drag:none;-ms-content-zooming:none;word-wrap:break-word;overscroll-behavior-y:none;-webkit-text-size-adjust:none;text-size-adjust:none}html{font-family:var(--ion-font-family)}@supports (-webkit-touch-callout: none){html{font:var(--ion-dynamic-font, 16px var(--ion-font-family))}}:root{--ion-color-primary:#4d8dff;--ion-color-primary-rgb:77, 141, 255;--ion-color-primary-contrast:#000;--ion-color-primary-contrast-rgb:0, 0, 0;--ion-color-primary-shade:#447ce0;--ion-color-primary-tint:#5f98ff;--ion-color-secondary:#46b1ff;--ion-color-secondary-rgb:70, 177, 255;--ion-color-secondary-contrast:#000;--ion-color-secondary-contrast-rgb:0, 0, 0;--ion-color-secondary-shade:#3e9ce0;--ion-color-secondary-tint:#59b9ff;--ion-color-tertiary:#8482fb;--ion-color-tertiary-rgb:132, 130, 251;--ion-color-tertiary-contrast:#000;--ion-color-tertiary-contrast-rgb:0, 0, 0;--ion-color-tertiary-shade:#7472dd;--ion-color-tertiary-tint:#908ffb;--ion-color-success:#2dd55b;--ion-color-success-rgb:45, 213, 91;--ion-color-success-contrast:#000;--ion-color-success-contrast-rgb:0, 0, 0;--ion-color-success-shade:#28bb50;--ion-color-success-tint:#42d96b;--ion-color-warning:#ffce31;--ion-color-warning-rgb:255, 206, 49;--ion-color-warning-contrast:#000;--ion-color-warning-contrast-rgb:0, 0, 0;--ion-color-warning-shade:#e0b52b;--ion-color-warning-tint:#ffd346;--ion-color-danger:#f24c58;--ion-color-danger-rgb:242, 76, 88;--ion-color-danger-contrast:#000;--ion-color-danger-contrast-rgb:0, 0, 0;--ion-color-danger-shade:#d5434d;--ion-color-danger-tint:#f35e69;--ion-color-light:#222428;--ion-color-light-rgb:34, 36, 40;--ion-color-light-contrast:#fff;--ion-color-light-contrast-rgb:255, 255, 255;--ion-color-light-shade:#1e2023;--ion-color-light-tint:#383a3e;--ion-color-medium:#989aa2;--ion-color-medium-rgb:152, 154, 162;--ion-color-medium-contrast:#000;--ion-color-medium-contrast-rgb:0, 0, 0;--ion-color-medium-shade:#86888f;--ion-color-medium-tint:#a2a4ab;--ion-color-dark:#f4f5f8;--ion-color-dark-rgb:244, 245, 248;--ion-color-dark-contrast:#000;--ion-color-dark-contrast-rgb:0, 0, 0;--ion-color-dark-shade:#d7d8da;--ion-color-dark-tint:#f5f6f9}</style><link rel="stylesheet" href="styles.9eb9253392f49785.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.9eb9253392f49785.css"></noscript></head>
+
 <body>
-    <div class="chat-app">
-        <div class="chat-header">
-            <h1>Jolo Chat</h1>
-        </div>
-        <div id="chatContainer" class="chat-container"></div>
-        <div class="input-area">
-            <div class="input-container">
-                <input type="text" id="userInput" placeholder="Digite sua mensagem..." autofocus >
-                <button onclick="sendMessage()" >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
-            </div>
-            <div id="loader" class="loader"></div>
-        </div>
-    </div>
-</body>
+  <app-root></app-root>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+<script src="runtime.5e06c1ecee548da3.js" type="module"></script><script src="polyfills.68a05ea0a12fdac7.js" type="module"></script><script src="main.dffb8d85cb649ebf.js" type="module"></script></body>
 
-<style>
-    /* Reset e variáveis */
-    :root {
-        --primary-color: #6e48aa;
-        --primary-dark: #4b2d7f;
-        --user-message: #f0f0f0;
-        --ai-message: #ffffff;
-        --text-color: #333;
-        --light-text: #666;
-        --border-color: #e0e0e0;
-    }
-    
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
-    
-    body {
-        background-color: #f7f7f8;
-        color: var(--text-color);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        padding: 20px;
-    }
-    
-    /* Estrutura principal */
-    .chat-app {
-        width: 100%;
-        max-width: 800px;
-        height: 90vh;
-        max-height: 900px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-    
-    /* Cabeçalho */
-    .chat-header {
-        padding: 16px 20px;
-        background-color: var(--primary-color);
-        color: white;
-        text-align: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .chat-header h1 {
-        font-size: 1.4rem;
-        font-weight: 600;
-    }
-    
-    /* Área de mensagens */
-    .chat-container {
-        flex: 1;
-        padding: 20px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        background-color: #f9f9f9;
-    }
-    
-    /* Estilos das mensagens */
-    .message {
-        max-width: 85%;
-        padding: 12px 16px;
-        border-radius: 18px;
-        line-height: 1.5;
-        position: relative;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-    
-    .user-message {
-        align-self: flex-end;
-        background-color: var(--primary-color);
-        color: white;
-        border-bottom-right-radius: 4px;
-    }
-    
-    .ai-message {
-        align-self: flex-start;
-        background-color: var(--ai-message);
-        border: 1px solid var(--border-color);
-        border-bottom-left-radius: 4px;
-    }
-    
-    .message-content {
-        word-wrap: break-word;
-    }
-    
-    .message-content pre {
-        background-color: #f5f5f5;
-        padding: 10px;
-        border-radius: 6px;
-        overflow-x: auto;
-        margin: 8px 0;
-    }
-    
-    .message-content code {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 0.9em;
-    }
-    
-    /* Área de pensamento da IA */
-    .thinking {
-        color: var(--light-text);
-        font-style: italic;
-        font-size: 0.9em;
-        padding: 8px 0;
-        border-left: 3px solid #ddd;
-        padding-left: 12px;
-        margin: 8px 0;
-    }
-    
-    /* Área de entrada */
-    .input-area {
-        padding: 16px;
-        background-color: white;
-        border-top: 1px solid var(--border-color);
-    }
-    
-    .input-container {
-        display: flex;
-        gap: 8px;
-    }
-    
-    input {
-        flex: 1;
-        padding: 12px 16px;
-        border: 1px solid var(--border-color);
-        border-radius: 24px;
-        font-size: 1rem;
-        outline: none;
-        transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    
-    input:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 2px rgba(110, 72, 170, 0.2);
-    }
-    
-    button {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    
-    button:hover {
-        background-color: var(--primary-dark);
-    }
-    
-    button svg {
-        width: 20px;
-        height: 20px;
-    }
-    
-    /* Loader */
-    .loader {
-        display: none;
-        margin: 8px auto 0;
-        width: 24px;
-        height: 24px;
-        border: 3px solid rgba(110, 72, 170, 0.2);
-        border-top: 3px solid var(--primary-color);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    /* Responsividade */
-    @media (max-width: 600px) {
-        .chat-app {
-            height: 100vh;
-            max-height: none;
-            border-radius: 0;
-        }
-        
-        .message {
-            max-width: 90%;
-        }
-    }
-</style>
 </html>
